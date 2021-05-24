@@ -71,11 +71,21 @@ public class PlayerMovement : MonoBehaviour
         //buttonPressed = 1;
 
         //Debug.Log(buttonPressed);
-        upDistance = GetDistanceToWall(Vector3.up);
-        downDistance = GetDistanceToWall(Vector3.down);
-        leftDistance = GetDistanceToWall(Vector3.left);
-        rightDistance = GetDistanceToWall(Vector3.right);
-
+        if (!isColliding)
+        {
+            upDistance = GetDistanceToWall(Vector3.up);
+            downDistance = GetDistanceToWall(Vector3.down);
+            leftDistance = GetDistanceToWall(Vector3.left);
+            rightDistance = GetDistanceToWall(Vector3.right);
+        }
+        else
+        {
+            upDistance = 255;
+            downDistance = 255;
+            leftDistance = 255;
+            rightDistance = 255;
+        }
+        //Debug.Log("up: " + upDistance + "; down: " + downDistance);
         
     }
 
@@ -89,11 +99,12 @@ public class PlayerMovement : MonoBehaviour
             return 0;
         }
 
-        int distance = (int)Vector3.Distance(transform.position, hit.point);
+        float distance = Vector3.Distance(transform.position, hit.point) * 16.0f;
+        distance = Mathf.Clamp(distance, 0.0f, 255.0f);
 
-        if (distance <= 255) return 255 - distance;
+        return 255 - (int)distance;
 
-        return 0;
+        //if (distance <= 255) return 255 - distance;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

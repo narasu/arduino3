@@ -28,6 +28,7 @@ public class Arduino : MonoBehaviour
 
     //how long to wait until next iteration in coroutine
     private float readYieldTimeout = 0.033f;
+    private float writeYieldTimeout = 0.066f;
     [Space]
 
     [SerializeField]
@@ -60,11 +61,12 @@ public class Arduino : MonoBehaviour
         }
 
         StartCoroutine(ReadDataFromStream());
+        StartCoroutine(WriteDataToStream());
     }
 
     private void Update()
     {
-        WriteDataToStream();
+        
     }
     private IEnumerator ReadDataFromStream()
     {
@@ -99,34 +101,30 @@ public class Arduino : MonoBehaviour
         }
     }
 
-    private void WriteDataToStream()
+    private IEnumerator WriteDataToStream()
     {
-        try
+        while(connectionOpened)
         {
-            if (connectionOpened)
+            byte[] directions = new byte[]
             {
-                byte[] directions = new byte[] 
-                { 
-                    Convert.ToByte(playerMovement.upDistance),
-                    Convert.ToByte(playerMovement.downDistance),
-                    Convert.ToByte(playerMovement.leftDistance),
-                    Convert.ToByte(playerMovement.rightDistance)
-                };
-                
-                //System.Buffer.BlockCopy(up, 0, b, 0, 4);
-                //System.Buffer.BlockCopy(down, 0, b, 4, 4);
-                //System.Buffer.BlockCopy(left, 0, b, 8, 4);
-                //System.Buffer.BlockCopy(right, 0, b, 12, 4);
 
-                stream.Write(directions, 0, 4);
-            }
-        }
-        catch (System.Exception)
-        {
-            if (debugMode)
-            {
-                Debug.Log("Data stream interrupted or incorrectly read.");
-            }
+                Convert.ToByte(playerMovement.upDistance),
+                Convert.ToByte(playerMovement.downDistance),
+                Convert.ToByte(playerMovement.leftDistance),
+                Convert.ToByte(playerMovement.rightDistance),
+                Convert.ToByte(0),
+                Convert.ToByte(255)
+            };
+
+            //Debug.Log(directions[0]);
+            //System.Buffer.BlockCopy(up, 0, b, 0, 4);
+            //System.Buffer.BlockCopy(down, 0, b, 4, 4);
+            //System.Buffer.BlockCopy(left, 0, b, 8, 4);
+            //System.Buffer.BlockCopy(right, 0, b, 12, 4);
+
+            stream.Write(directions, 0, 6);
+
+            yield return new WaitForSeconds(writeYieldTimeout);
         }
     }
     private void OpenConnection()
