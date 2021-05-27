@@ -1,0 +1,1 @@
+﻿public enum GameStateType { STATE_BEGIN, STATE_WAIT, STATE_PLAYING, STATE_DEAD, STATE_WIN }

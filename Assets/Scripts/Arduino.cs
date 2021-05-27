@@ -83,7 +83,6 @@ public class Arduino : MonoBehaviour
                         position.x = str[0];
                         position.y = str[1];
                         position.z = 0;
-                        interact = (int)str[2];
                     }
 
                     stream.BaseStream.Flush();
@@ -182,6 +181,7 @@ public class Arduino : MonoBehaviour
         }
     }
 
+    
     private void OnApplicationQuit()
     {
         if (stream != null)

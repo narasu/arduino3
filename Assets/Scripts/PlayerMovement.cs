@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 /* This script sets an object to mouse position, 
  * then casts a ray to select an object in 3d space.*/
@@ -31,15 +32,19 @@ public class PlayerMovement : MonoBehaviour
                 dead = true;
 
                 //TODO: restart scene, deduct life etc
+                deadEvent.Invoke();
             }
         }
     }
+    public UnityEvent deadEvent;
+    public UnityEvent winEvent;
 
     private bool isColliding = false;
 
     void Start()
     {
         arduino = listener.GetComponent<Arduino>();
+        
     }
 
     void Update()
@@ -85,23 +90,23 @@ public class PlayerMovement : MonoBehaviour
             leftDistance = 255;
             rightDistance = 255;
         }
-        //Debug.Log("up: " + upDistance + "; down: " + downDistance);
+        Debug.Log("up: " + upDistance + "; down: " + downDistance);
         
     }
 
     int GetDistanceToWall(Vector3 _direction)
     {
         //Debug.Log("yes");
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, _direction, 20.0f, LayerMask.GetMask("Obstacle"));
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, _direction, 2.0f, LayerMask.GetMask("Obstacle"));
 
         if (hit.collider == null)
         {
             return 0;
         }
 
-        float distance = Vector3.Distance(transform.position, hit.point) * 16.0f;
+        float distance = Vector3.Distance(transform.position, hit.point) * 128.0f;
         distance = Mathf.Clamp(distance, 0.0f, 255.0f);
-
+        
         return 255 - (int)distance;
 
         //if (distance <= 255) return 255 - distance;
@@ -116,6 +121,14 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Debug.Log("hello");
+        if (collision.gameObject.CompareTag("Goal"))
+        {
+            winEvent.Invoke();
+        }
+    }
     private void OnCollisionExit2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Obstacle"))
