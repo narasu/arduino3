@@ -32,7 +32,6 @@ public class Arduino : MonoBehaviour
     [Space]
 
     [SerializeField]
-    [Tooltip("This needs to be set to the mouse cursor object")]
     private GameObject playerGameObject;
     private PlayerMovement playerMovement;
 

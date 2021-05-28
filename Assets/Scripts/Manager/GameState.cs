@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public abstract class GameState
 {
@@ -70,6 +71,7 @@ public class WaitState : GameState
                 owner.GotoState(GameStateType.STATE_PLAYING);
             }
         }
+        gameManager.countdownText.text = Mathf.Ceil(timer).ToString();
     }
     public override void Exit()
     {
@@ -96,7 +98,7 @@ public class PlayingState : GameState
 }
 public class DeadState : GameState
 {
-    private float timer = 1.0f;
+    private float timer = 2.0f;
     public override void Enter()
     {
         gameManager.deadText.SetActive(true);
@@ -117,6 +119,7 @@ public class DeadState : GameState
     {
         timer = 2.0f;
         gameManager.deadText.SetActive(false);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
 public class WinState : GameState
@@ -130,14 +133,14 @@ public class WinState : GameState
     }
     public override void Update()
     {
-        if (timer > 0.0f)
-        {
-            timer -= Time.deltaTime;
-        }
-        else
-        {
-            //go to next scene
-        }
+        //if (timer > 0.0f)
+        //{
+        //    timer -= Time.deltaTime;
+        //}
+        //else
+        //{
+        //    //go to next scene
+        //}
     }
     public override void Exit()
     {

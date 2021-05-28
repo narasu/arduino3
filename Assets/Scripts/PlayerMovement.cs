@@ -50,16 +50,10 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         Vector3 nextPosition = new Vector3(-17.0f + (arduino.Position.x * 0.05f), -17.0f + (arduino.Position.y * 0.05f), 0);
+        //Vector3 nextPosition = arduino.Position;
         transform.position = Vector3.Lerp(transform.position, nextPosition, 0.5f);
+        //transform.position = nextPosition;
         
-        if (arduino.Interact == 1)
-        {
-            buttonPressed = 1;
-        } 
-        else
-        {
-            buttonPressed = 0;
-        }
 
         //Debug.Log(collisionTime);
 
@@ -123,7 +117,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("hello");
+        //Debug.Log("hello");
         if (collision.gameObject.CompareTag("Goal"))
         {
             winEvent.Invoke();

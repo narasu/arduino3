@@ -57,13 +57,9 @@ public class GameFSM
             Debug.Log("Dictionary does not contain key " + _key);
             return;
         }
-        if (currentStateType == _key)
-        {
-            Debug.Log("Already in state " + _key);
-        }
         currentState?.Exit();
         previousState = currentState;
-        currentState = states[currentStateType];
+        currentState = states[_key];
         currentStateType = _key;
         currentState.Enter();
     }
