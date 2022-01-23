@@ -39,7 +39,7 @@ public class BeginState : GameState
         {
             if (Vector3.Distance(gameManager.StartPosition, gameManager.arduino.Position) <= 0.25f) 
             {
-                owner.GotoState(GameStateType.STATE_WAIT);
+                owner.GotoState(GameStateType.STATE_PLAYING);
             }
         }
     }

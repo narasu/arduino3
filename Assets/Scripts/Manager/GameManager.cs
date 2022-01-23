@@ -6,7 +6,7 @@ using TMPro;
 
 public class GameManager : MonoBehaviour
 {
-    public Arduino arduino;
+    public FakeArduino arduino;
     public GameObject player;
     [SerializeField] private Vector2 startPosition;
     public Vector2 StartPosition { get => startPosition; }
@@ -30,7 +30,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        fsm.GotoState(GameStateType.STATE_BEGIN);
+        fsm.GotoState(GameStateType.STATE_PLAYING);
     }
 
     // Update is called once per frame

@@ -11,6 +11,7 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] private GameObject listener;
     private Arduino arduino;
+    public FakeArduino fakeArduino;
 
     public int buttonPressed;
 
@@ -49,13 +50,11 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        Vector3 nextPosition = new Vector3(-17.0f + (arduino.Position.x * 0.05f), -17.0f + (arduino.Position.y * 0.05f), 0);
-        //Vector3 nextPosition = arduino.Position;
-        transform.position = Vector3.Lerp(transform.position, nextPosition, 0.5f);
-        //transform.position = nextPosition;
-        
 
-        //Debug.Log(collisionTime);
+        Vector3 nextPosition = new Vector3(-17.0f + (arduino.Position.x * 0.05f), -17.0f + (arduino.Position.y * 0.05f), 0);
+        transform.position = Vector3.Lerp(transform.position, nextPosition, 0.5f);
+
+        //transform.position = fakeArduino.Position;
 
         if (isColliding)
         {
